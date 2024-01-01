@@ -1,6 +1,8 @@
 # io_ctrl
-This package provides a libray for manage in- and outputs
+This package provides a library for manage in- and outputs.
 
 # schema
+![class diagram](doc/class_diagram.png)
 
-![jsdjk](doc/class_diagram.png)
+
+
