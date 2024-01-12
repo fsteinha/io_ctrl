@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="13.3">
+<diagram program="umlet" version="15.1">
   <zoom_level>7</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
       <x>350</x>
       <y>42</y>
-      <w>189</w>
+      <w>238</w>
       <h>301</h>
     </coordinates>
     <panel_attributes>&lt;&lt; class &gt;&gt;
 LogicalIn
 --
-- mode: EN_LOG_IN_MODE
+- en_get_mode: EN_LOG_IN_MODE
 - debounce_mode: DebounceMode
 - value: bool
-- get_time_us: int_32 (*)()
-- get_time_ms: int_32 (*)()
-- get_time_s: int_32 (*)()
+- get_value_hw:(*)()
+
 --
 +# LogicalIn(en_get_mode: EN_LOG_IN_MODE)
 +# LogicalIn(en_get_mode: EN_LOG_IN_MODE,
-debounce_mode: DebounceMode )
+debounce_mode: DebounceMode)
 +# trigger()
 +# get_value():bool
+
 
 </panel_attributes>
     <additional_attributes/>
@@ -49,7 +49,7 @@ debounce_mode: DebounceMode )
       <h>42</h>
     </coordinates>
     <panel_attributes>&lt;&lt; pointer &gt;&gt;
-trigger: (*)()
+trigger: get_value_hw(*)()
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -82,25 +82,25 @@ IntLogicalGet
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>532</x>
+      <x>581</x>
       <y>70</y>
-      <w>42</w>
+      <w>49</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=-()
 </panel_attributes>
-    <additional_attributes>10.0;20.0;40.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
+      <x>616</x>
       <y>77</y>
-      <w>133</w>
+      <w>77</w>
       <h>21</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;170.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -118,7 +118,7 @@ IntLogicalGet
     <coordinates>
       <x>350</x>
       <y>364</y>
-      <w>189</w>
+      <w>238</w>
       <h>84</h>
     </coordinates>
     <panel_attributes>&lt;&lt; class &gt;&gt;
@@ -138,7 +138,7 @@ LogicalOut
     <coordinates>
       <x>350</x>
       <y>476</y>
-      <w>189</w>
+      <w>238</w>
       <h>84</h>
     </coordinates>
     <panel_attributes>SerialJson</panel_attributes>
@@ -147,37 +147,37 @@ LogicalOut
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>532</x>
+      <x>581</x>
       <y>525</y>
-      <w>77</w>
+      <w>56</w>
       <h>35</h>
     </coordinates>
     <panel_attributes>lt=-(
 </panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>616</x>
+      <y>91</y>
+      <w>252</w>
+      <h>462</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;640.0;340.0;640.0;340.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>581</x>
-      <y>91</y>
-      <w>287</w>
-      <h>462</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;640.0;390.0;640.0;390.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>532</x>
       <y>413</y>
-      <w>70</w>
+      <w>49</w>
       <h>28</h>
     </coordinates>
     <panel_attributes>lt=-()
 </panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -196,7 +196,7 @@ LogicalOut
       <x>35</x>
       <y>238</y>
       <w>259</w>
-      <h>105</h>
+      <h>182</h>
     </coordinates>
     <panel_attributes>&lt;&lt; class &gt;&gt;
 DebounceMode
@@ -204,8 +204,14 @@ DebounceMode
 - en_mode:{EN_DEB_MODE_TIME, EN_DEB_MODE_COUNT}
 - count
 - time_ms
+- get_time_us: int_32 (*)()
+- get_time_ms: int_32 (*)()
+- get_time_s: int_32 (*)()
 --
-#  DebounceMode(en_mode:EN_DEB_MODE, time_ms, count)
+#  DebounceMode(en_mode:EN_DEB_MODE, 
+time_ms, count, ptr_time_us:int_32 (*)(),
+ptr_time_ms:int_32 (*)(),
+ptr_time_s:int_32 (*)())
 </panel_attributes>
     <additional_attributes/>
   </element>
@@ -231,21 +237,21 @@ DebounceMode
     <panel_attributes>&lt;&lt; enumeration &gt;&gt;
 EN_LOG_IN_MODE
 --
-POLL
-TRIGGER</panel_attributes>
+EN_POLL
+EN_TRIGGER</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>532</x>
+      <x>581</x>
       <y>483</y>
-      <w>77</w>
+      <w>56</w>
       <h>35</h>
     </coordinates>
     <panel_attributes>lt=-(
 </panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;50.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -256,7 +262,7 @@ TRIGGER</panel_attributes>
       <h>91</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;10.0;100.0;110.0;10.0;110.0</additional_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;110.0;60.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
