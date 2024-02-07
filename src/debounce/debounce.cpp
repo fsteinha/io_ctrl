@@ -38,6 +38,8 @@ Debounce::Debounce(EN_DEB_MODE en_deb_mode,
 
 /**
  * @brief trigger the debouncing
+ *        in EN_DEB_MODE_COUNT the trigger counts down the u16_count
+ *        in EN_DEB_MODE_TIME the current time is measured
  *
  * @return EN_DEB_STATE
  */
@@ -100,7 +102,7 @@ EN_DEB_STATE Debounce::trigger(void)
 /**
  * @brief getter for debounce state
  *
- * @return EN_DEB_STATE
+ * @return current debounce state
  */
 EN_DEB_STATE Debounce::get_state()
 {
