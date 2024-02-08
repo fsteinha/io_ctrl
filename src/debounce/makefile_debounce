@@ -9,6 +9,8 @@ ifeq ($(strip $(OUT)),)
   $(warning OUT path not specified. Set to $(OUT))
 endif
 
+$(shell mkdir -p $(OUT))
+
 # Compiler
 CC := g++
 
@@ -41,6 +43,9 @@ all: $(EXEC) lib
 # Target for compiling the test
 $(EXEC): $(TEST_OBJ) $(OBJ)
 	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ) $(TEST_OBJ)
+
+test: $(EXEC)
+	$(EXEC)
 
 # Target for generating archive
 $(LIB): $(OBJ)

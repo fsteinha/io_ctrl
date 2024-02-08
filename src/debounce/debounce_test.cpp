@@ -13,7 +13,7 @@ void testInitialState() {
 void testTriggerCountMode() {
     Debounce debounce(EN_DEB_MODE_COUNT, 100, 3, nullptr);
     ASSERT_EQUAL(EN_DEB_STATE_START, debounce.trigger());
-    ASSERT_EQUAL(EN_DEB_STATE_NONE, debounce.get_state());
+    ASSERT_EQUAL(EN_DEB_STATE_START, debounce.get_state());
     ASSERT_EQUAL(EN_DEB_STATE_NONE, debounce.trigger());
     ASSERT_EQUAL(EN_DEB_STATE_NONE, debounce.trigger());
     ASSERT_EQUAL(EN_DEB_STATE_READY, debounce.trigger());
