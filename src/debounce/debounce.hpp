@@ -25,7 +25,7 @@ typedef enum
 // Debounce class
 class Debounce
 {
-    private:
+    public:
         // setted mode
         EN_DEB_MODE en_deb_mode;
         // setted state

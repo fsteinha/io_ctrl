@@ -59,6 +59,7 @@ EN_DEB_STATE Debounce::trigger(void)
                      (this->ptr_time_ms != nullptr))
             {
                 this->u16_time_start_ms = this->ptr_time_ms();
+                this->u16_time_idx_ms = this->u16_time_start_ms;
             }
             else
             {
@@ -71,25 +72,22 @@ EN_DEB_STATE Debounce::trigger(void)
         {
             if (this->en_deb_mode == EN_DEB_MODE_COUNT)
             {
+                this->u16_count_idx--;
                 if (this->u16_count_idx == 0)
                 {
                     this->en_deb_state = EN_DEB_STATE_READY;
                 }
-                else
-                {
-                    this->u16_count_idx--;
-                }
             }
             else if (this->en_deb_mode == EN_DEB_MODE_TIME)
             {
-                uint16_t u16_time_idx = this->ptr_time_ms();
-                if ((u16_time_idx > this->u16_time_start_ms) &&
-                    ((u16_time_idx - this->u16_time_start_ms) > this->u16_time_ms))
+                this->u16_time_idx_ms = this->ptr_time_ms();
+                if ((this->u16_time_idx_ms > this->u16_time_start_ms) &&
+                    ((this->u16_time_idx_ms - this->u16_time_start_ms) >= this->u16_time_ms))
                 {
                     this->en_deb_state = EN_DEB_STATE_READY;
                 }
-                else if ((u16_time_idx < this->u16_time_start_ms) &&
-                         ((uint16_t)(-1) - (this->u16_time_start_ms - u16_time_idx)) > this->u16_time_ms)
+                else if ((this->u16_time_idx_ms < this->u16_time_start_ms) &&
+                         ((uint16_t)(-1) - (this->u16_time_start_ms - this->u16_time_idx_ms) +1 ) >= this->u16_time_ms)
                 {
                     this->en_deb_state = EN_DEB_STATE_READY;
                 }
