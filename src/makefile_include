@@ -1,0 +1,110 @@
+# Common makefile definitions
+# This file is include by makefiles from
+# - logical_in
+# - debounce
+
+# Predefines
+##############################################################################
+# Source files
+ifeq ($(strip $(SRC)),)
+  $(error Source files not defined)
+endif
+
+# Unittest files
+ifeq ($(strip $(TEST_SRC)),)
+  $(error Unittest files not defined)
+endif
+
+# Target for library
+ifeq ($(strip $(LIB)),)
+  $(error Library file is not defined)
+endif
+
+# Target for the test executables
+ifeq ($(strip $(TEST_EXEC)),)
+  $(error Test executable not defined)
+endif
+
+# Predefine CUTE_INCLUDE_PATH, default ../extern/CUTE/cute
+ifeq ($(strip $(CUTE_INCLUDE_PATH)),)
+  CUTE_INCLUDE_PATH=../extern/CUTE/cute
+endif
+$(info Set CUTE_INCLUDE_PATH to $(CUTE_INCLUDE_PATH))
+
+# Predefine output directory, default ./out
+ifeq ($(strip $(OUT)),)
+  OUT=./out
+endif
+$(info Set OUT to $(OUT))
+
+# make the output directory
+$(shell mkdir -p $(OUT))
+
+# Compiler
+ifeq ($(strip $(CC)),)
+  CC := g++
+endif
+$(info Set CC to $(CC))
+
+# Compiler flags
+ifeq ($(strip $(CFLAGS)),)
+  CFLAGS := -std=c++11 -Wall -Wextra
+endif
+$(info Set CFLAGS to $(CFLAGS))
+
+# Archive file
+ifeq ($(strip $(AR)),)
+  AR := ar
+endif
+$(info Set AR to $(AR))
+
+ifeq ($(strip $(ARFLAGS)),)
+  ARFLAGS := rcs
+endif
+$(info Set to ARFLAGS $(ARFLAGS))
+
+# Include path
+ifeq ($(strip $(INCLUDE_PATH)),)
+  INCLUDE_PATH = ./
+endif
+$(info Set to INCLUDE_PATH $(INCLUDE_PATH))
+
+
+# Target definitions
+##############################################################################
+
+# Object files
+INCLUDES = $(addprefix -I,$(INCLUDE_PATH))
+OBJ := $(patsubst %.cpp,$(OUT)/%.o,$(SRC))
+TEST_OBJ := $(patsubst %.cpp,$(OUT)/%.ot,$(TEST_SRC))
+LIB_OUT := $(OUT)/$(LIB)
+TEST_EXEC_OUT := $(OUT)/$(TEST_EXEC)
+
+# Target for compiling the application
+all: $(TEST_EXEC_OUT) lib
+
+# Target for compiling the test
+$(TEST_EXEC_OUT): $(TEST_OBJ) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TEST_EXEC_OUT) $(OBJ) $(TEST_OBJ)
+
+test: $(TEST_EXEC_OUT)
+	$(TEST_EXEC_OUT)
+
+# Target for generating archive
+$(LIB_OUT): $(OBJ)
+
+.PHONY: lib
+lib: $(LIB_OUT)
+	$(AR) $(ARFLAGS) $(LIB_OUT) $(OBJ)
+
+# Clean rule
+clean:
+	$(RM) $(OBJ) $(TEST_EXEC_OUT) $(TEST_OBJ) $(LIB_OUT)
+
+# Rule to compile source files
+$(OUT)/%.o: %.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+# Rule to compile test source files
+$(OUT)/%.ot: %.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -I$(CUTE_INCLUDE_PATH) -c -o $@ $<

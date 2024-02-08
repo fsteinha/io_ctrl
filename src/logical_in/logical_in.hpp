@@ -38,9 +38,9 @@ class LogicalIn
 
     public:
         LogicalIn(EN_LOG_IN_MODE en_get_mode,
-                  void(*get_value_hw)());
+                  uint16_t (*get_value_hw)(void));
         LogicalIn(EN_LOG_IN_MODE en_get_mode,
-                  void(*get_value_hw)(),
+                  uint16_t (*get_value_hw)(void),
                   Debounce *ptr_debounce);
         void trigger(void);
         EN_LOG_IN_VALUE get_value();

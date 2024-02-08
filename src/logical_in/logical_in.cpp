@@ -6,7 +6,7 @@
  * @param en_get_mode
  */
 LogicalIn::LogicalIn(EN_LOG_IN_MODE en_get_mode,
-                     uint16_t (*get_value_hw)())
+                     uint16_t (*get_value_hw)(void))
 {
     this->init();
     this->get_value_hw=get_value_hw;
@@ -51,7 +51,7 @@ EN_LOG_IN_VALUE LogicalIn::get_value()
  */
 void LogicalIn::trigger()
 {
-    if (this->get_value_hw != nullptr_t)
+    if (this->get_value_hw != nullptr)
     {
         uint16_t u16_value = this->get_value_hw();
         if (u16_value == 0)
