@@ -51,11 +51,11 @@ EN_DEB_STATE Debounce::trigger(void)
         case EN_DEB_STATE_NONE:
         case EN_DEB_STATE_READY:
         {
-            if (this->en_deb_mode = EN_DEB_MODE_COUNT)
+            if (this->en_deb_mode == EN_DEB_MODE_COUNT)
             {
                 this->u16_count_idx = this->u16_count;
             }
-            else if ((this->en_deb_mode = EN_DEB_MODE_TIME) &&
+            else if ((this->en_deb_mode == EN_DEB_MODE_TIME) &&
                      (this->ptr_time_ms != nullptr))
             {
                 this->u16_time_start_ms = this->ptr_time_ms();
@@ -69,7 +69,7 @@ EN_DEB_STATE Debounce::trigger(void)
         }
         case EN_DEB_STATE_START:
         {
-            if (this->en_deb_mode = EN_DEB_MODE_COUNT)
+            if (this->en_deb_mode == EN_DEB_MODE_COUNT)
             {
                 if (this->u16_count_idx == 0)
                 {
@@ -80,7 +80,7 @@ EN_DEB_STATE Debounce::trigger(void)
                     this->u16_count_idx--;
                 }
             }
-            else if (this->en_deb_mode = EN_DEB_MODE_TIME)
+            else if (this->en_deb_mode == EN_DEB_MODE_TIME)
             {
                 uint16_t u16_time_idx = this->ptr_time_ms();
                 if ((u16_time_idx > this->u16_time_start_ms) &&
@@ -97,6 +97,7 @@ EN_DEB_STATE Debounce::trigger(void)
             break;
         }
     }
+    return this->en_deb_state;
 }
 
 /**

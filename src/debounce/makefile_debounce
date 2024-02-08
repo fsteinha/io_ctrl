@@ -1,53 +1,61 @@
+# Predefines
+ifeq ($(strip $(CUTE_INCLUDE_PATH)),)
+  CUTE_INCLUDE_PATH=../extern/CUTE/cute
+  $(warning CUTE include path not specified. Set to $(CUTE_INCLUDE_PATH))
+endif
+
+ifeq ($(strip $(OUT)),)
+  OUT=./out
+  $(warning OUT path not specified. Set to $(OUT))
+endif
+
 # Compiler
 CC := g++
 
 # Compiler flags
 CFLAGS := -std=c++11 -Wall -Wextra
-
+CFLAGS +=
 # Source files
 SRC := debounce.cpp
 TEST_SRC := debounce_test.cpp
 
 # Object files
-OBJ := $(SRC:.cpp=.o)
-TEST_OBJ := $(TEST_SRC:.cpp=.o)
+OBJ := $(patsubst %.cpp,$(OUT)/%.o,$(SRC))
+TEST_OBJ := $(patsubst %.cpp,$(OUT)/%.ot,$(TEST_SRC))
 
 # Executables
-EXEC := debounce_test
+EXEC := $(OUT)/debounce_test
 
 # Archive file
 AR := ar
 ARFLAGS := rcs
-LIB := libdebounce.a
+LIB := $(OUT)/libdebounce.a
 
 # CUTE library path
 CUTE_LIB := $(CUTE_LIB_PATH)
 CUTE_INCLUDE := $(CUTE_INCLUDE_PATH)
 
 # Target for compiling the application
-all: $(EXEC)
+all: $(EXEC) lib
 
 # Target for compiling the test
 $(EXEC): $(TEST_OBJ) $(OBJ)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ) $(TEST_OBJ) -I$(CUTE_INCLUDE) -L$(CUTE_LIB) -lcute
+	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ) $(TEST_OBJ)
 
 # Target for generating archive
-lib: $(OBJ)
+$(LIB): $(OBJ)
+
+.PHONY: lib
+lib: $(LIB)
 	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
-
-ifeq ($(strip $(CUTE_LIB_PATH)),)
-	$(warning CUTE library path not specified. Set CUTE_LIB_PATH to the location of the CUTE library.)
-endif
-ifeq ($(strip $(CUTE_INCLUDE_PATH)),)
-	$(warning CUTE include path not specified. Set CUTE_INCLUDE_PATH to the location of the CUTE headers.)
-endif
-
-# Rule to compile source files
-%.o: %.cpp
-	$(CC) $(CFLAGS) -c -o $@ $<
 
 # Clean rule
 clean:
 	$(RM) $(OBJ) $(EXEC) $(TEST_OBJ) $(LIB)
 
-.PHONY: all test lib clean
+# Rule to compile source files
+$(OUT)/%.o: %.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OUT)/%.ot: %.cpp
+	$(CC) $(CFLAGS) -I$(CUTE_INCLUDE_PATH) -c -o $@ $<

@@ -38,7 +38,7 @@ void runAllTests() {
     s.push_back(CUTE(testInitialState));
     s.push_back(CUTE(testTriggerCountMode));
     s.push_back(CUTE(testTriggerTimeMode));
-    cute::ide_listener lis;
+    cute::ide_listener<> lis{};
     cute::makeRunner(lis)(s, "Debounce Test");
 }
 
