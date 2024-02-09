@@ -41,7 +41,7 @@ $(info Set OUT to $(OUT))
 $(shell mkdir -p $(OUT))
 
 # Compiler
-ifeq ($(strip $(CC)),)
+ifeq ($(strip $(COMPILER)),)
   CC := g++
 endif
 $(info Set CC to $(CC))
@@ -63,18 +63,15 @@ ifeq ($(strip $(ARFLAGS)),)
 endif
 $(info Set to ARFLAGS $(ARFLAGS))
 
-# Include path
-ifeq ($(strip $(INCLUDE_PATH)),)
-  INCLUDE_PATH = ./
-endif
-$(info Set to INCLUDE_PATH $(INCLUDE_PATH))
-
-
 # Target definitions
 ##############################################################################
 
 # Object files
-INCLUDES = $(addprefix -I,$(INCLUDE_PATH))
+ifdef INCLUDE_PATH
+  INCLUDES = $(addprefix -I,$(INCLUDE_PATH))
+  VPATH += $(INCLUDE_PATH)
+endif
+
 OBJ := $(patsubst %.cpp,$(OUT)/%.o,$(SRC))
 TEST_OBJ := $(patsubst %.cpp,$(OUT)/%.ot,$(TEST_SRC))
 LIB_OUT := $(OUT)/$(LIB)
@@ -85,7 +82,7 @@ all: $(TEST_EXEC_OUT) lib
 
 # Target for compiling the test
 $(TEST_EXEC_OUT): $(TEST_OBJ) $(OBJ)
-	$(CC) $(CFLAGS) -o $(TEST_EXEC_OUT) $(OBJ) $(TEST_OBJ)
+	$(CC) $(CFLAGS) -o $(TEST_EXEC_OUT) $(TEST_OBJ) $(OBJ)
 
 test: $(TEST_EXEC_OUT)
 	$(TEST_EXEC_OUT)

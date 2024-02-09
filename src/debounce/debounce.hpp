@@ -15,9 +15,9 @@ typedef enum
 
 {
     // no debouncing is running
-    EN_DEB_STATE_NONE,
+    EN_DEB_STATE_STOP,
     // debouncing is started
-    EN_DEB_STATE_START,
+    EN_DEB_STATE_RUN,
     // debouncing is ready
     EN_DEB_STATE_READY,
 }EN_DEB_STATE;
@@ -61,6 +61,9 @@ class Debounce
         // in EN_DEB_MODE_TIME the current time is measured
         EN_DEB_STATE trigger(void);
 
-        // returns debounce state EN_DEB_STATE
+        //! getter for debounce state EN_DEB_STATE
         EN_DEB_STATE get_state(void);
+
+        //! reset the internal state
+        void reset(void);
 };

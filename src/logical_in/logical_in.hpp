@@ -24,24 +24,36 @@ typedef enum
 }EN_LOG_IN_VALUE;
 
 /**
- * @brief class for handling inputs based on HIGH/LOW
+ * @brief class for handling one input based on HIGH/LOW value
  *
  */
 class LogicalIn
 {
     private:
+        //! store value
         EN_LOG_IN_VALUE en_value;
-        EN_LOG_IN_MODE  en_get_mode;
+        //! mode how the input shall read
+        EN_LOG_IN_MODE  en_read_mode;
+        //! debounce object, default nullptr
         Debounce        *debounce;
+        //! callback pointer for reading the input from hardware
         uint16_t (*get_value_hw) ();
+        //! init function, used from constructors
         void init();
+        //! read input and convert
+        EN_LOG_IN_VALUE read_input();
 
     public:
-        LogicalIn(EN_LOG_IN_MODE en_get_mode,
+        //! constructor without debounce object
+        LogicalIn(EN_LOG_IN_MODE en_read_mode,
                   uint16_t (*get_value_hw)(void));
-        LogicalIn(EN_LOG_IN_MODE en_get_mode,
+        //! constructor with debounce object
+        LogicalIn(EN_LOG_IN_MODE en_read_mode,
                   uint16_t (*get_value_hw)(void),
                   Debounce *ptr_debounce);
+        //! trigger function - this function is called from outside to read the input
+        //! the pointer can used for interrupt functions
         void trigger(void);
+        //! getter for stored value
         EN_LOG_IN_VALUE get_value();
 };

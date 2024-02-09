@@ -7,7 +7,7 @@
 void Debounce::init(void)
 {
     this->en_deb_mode=EN_DEB_MODE_COUNT;
-    this->en_deb_state=EN_DEB_STATE_NONE;
+    this->en_deb_state=EN_DEB_STATE_STOP;
     this->u16_time_ms = 0;
     this->u16_count = 0;
     this->u16_count_idx = 0;
@@ -48,7 +48,7 @@ EN_DEB_STATE Debounce::trigger(void)
 {
     switch (this->en_deb_state)
     {
-        case EN_DEB_STATE_NONE:
+        case EN_DEB_STATE_STOP:
         case EN_DEB_STATE_READY:
         {
             if (this->en_deb_mode == EN_DEB_MODE_COUNT)
@@ -65,10 +65,10 @@ EN_DEB_STATE Debounce::trigger(void)
             {
                 break;
             }
-            this->en_deb_state = EN_DEB_STATE_START;
+            this->en_deb_state = EN_DEB_STATE_RUN;
             break;
         }
-        case EN_DEB_STATE_START:
+        case EN_DEB_STATE_RUN:
         {
             if (this->en_deb_mode == EN_DEB_MODE_COUNT)
             {
@@ -106,4 +106,13 @@ EN_DEB_STATE Debounce::trigger(void)
 EN_DEB_STATE Debounce::get_state()
 {
     return this->en_deb_state;
+}
+
+/**
+ * @brief function to reset the internal state to initial
+ *
+ */
+void Debounce::reset()
+{
+    this->en_deb_state = EN_DEB_STATE_STOP;
 }
