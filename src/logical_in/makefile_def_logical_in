@@ -1,0 +1,11 @@
+# Include path
+INCLUDE_PATH := ../debounce
+# Source files
+SRC = logical_in.cpp
+SRC += debounce.cpp
+# Test source file
+TEST_SRC = logical_in_test.cpp
+# libray target
+LIB := lib_logical_in.a
+# test target
+TEST_EXEC := logical_in_test

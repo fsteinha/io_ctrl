@@ -1,0 +1,8 @@
+# Source files
+SRC := debounce.cpp
+# unittest files
+TEST_SRC := debounce_test.cpp
+# libary target
+LIB := lib_debounce.a
+# test target
+TEST_EXEC := debounce_test
